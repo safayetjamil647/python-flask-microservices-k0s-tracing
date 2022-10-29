@@ -6,3 +6,7 @@ docker network create --driver bridge micro_network (skip if already created)
 docker build -t frontend-srv .
 docker run -p 5000:5000 --detach --name frontend-service --net=micro_network frontend-srv
 ```
+
+## Telemetry Sdk Newrelic 
+
+We will configure the APM first
