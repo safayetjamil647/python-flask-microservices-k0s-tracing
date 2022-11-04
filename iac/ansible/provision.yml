@@ -1,0 +1,43 @@
+---
+
+
+- hosts: '{{ host }}'
+
+
+  gather_facts: yes
+    
+  remote_user: staging
+  become: yes 
+  become_method: sudo
+  vars:
+      app_base_path: "/home/devhome/"
+  
+
+  tasks:
+    - name: Create App Base Directory
+      tags: deploy
+      file:
+        path: "{{app_base_path}}"
+        state: directory
+        mode: 0777
+
+    - name: Docker installer script
+      copy: src=docker.sh dest=/home/devhome/ mode=0777
+    - name: Docker installing
+      command: sh /home/devhome/docker.sh
+    
+    - name: K0sctl installer script
+      copy: src=k0sctl.sh dest=/ mode=0777
+    - name: Kubernetes installing
+      command: sh /k0sctl.sh
+    
+
+    - name: Git Installer script
+      copy: src=git.sh dest=/home/devhome/ mode=0777
+    - name: Git installing
+      command: sh /home/devhome/git.sh
+
+    - name: Git configure
+      copy: src=gitconfig.sh dest=/home/devhome/ mode=0777
+    - name: Configuration Done
+      command: sh /home/devhome/gitconfig.sh
